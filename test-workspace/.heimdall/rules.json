@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Heimdall Workflow Engine Rules",
+  "description": "Configuration file for the Heimdall extension, defining the core principles and rules for the workflow.",
+  "type": "object",
+  "properties": {
+    "project_rules": {
+      "type": "object",
+      "properties": {
+        "require_docs_for_prod": { "type": "boolean", "default": true },
+        "require_tests_for_prod": { "type": "boolean", "default": true }
+      }
+    },
+    "agent_rules": {
+      "type": "object",
+      "properties": {
+        "default_persona": { "type": "string", "default": "You are a senior software engineer specializing in clean, testable, and well-documented code." },
+        "forbidden_actions": { "type": "array", "items": { "type": "string" }, "default": [] }
+      }
+    },
+    "user_rules": {
+      "type": "object",
+      "properties": {
+        "default_commit_prefix": { "type": "string", "enum": ["feat", "fix", "chore", "docs", "test", "refactor"], "default": "feat" }
+      }
+    },
+    "overall_rules": {
+      "type": "object",
+      "properties": {
+        "core_directives_path": { "type": "string", "default": ".heimdall/core_directives.md" }
+      }
+    }
+  }
+}

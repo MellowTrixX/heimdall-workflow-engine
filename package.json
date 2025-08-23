@@ -1,0 +1,107 @@
+{
+  "name": "heimdall-workflow-engine",
+  "displayName": "Heimdall Workflow Engine",
+  "description": "An intelligent workflow and quality gatekeeper for VS Code.",
+  "version": "2.0.0",
+  "publisher": "MellowTrixX",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "heimdall.showDashboard",
+        "title": "🛡️ Dashboard anzeigen",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.classifyTask",
+        "title": "🏷️ Task klassifizieren",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.promoteTask",
+        "title": "🚀 Task befördern",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.realityCheck",
+        "title": "🔍 Reality Check",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.reportDebt",
+        "title": "📊 Integration Debt Report",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.refresh",
+        "title": "🔄 Workspace neu scannen",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.openRules",
+        "title": "⚙️ Regeln öffnen",
+        "category": "Heimdall"
+      },
+      {
+        "command": "heimdall.openDirectives",
+        "title": "📋 Core Directives öffnen",
+        "category": "Heimdall"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "heimdall.showDashboard",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.classifyTask",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.promoteTask",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.realityCheck",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.reportDebt",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.refresh",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.openRules",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "heimdall.openDirectives",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}
