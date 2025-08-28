@@ -1,13 +1,13 @@
-# ===================================================================
-# 🛡️ HEIMDALL WORKFLOW ENGINE - VOLLSTÄNDIGES SETUP SCRIPT
-# "Der Wächter der Brücke zwischen Plan und Realität"
-# ===================================================================
+ ===================================================================
+ 🛡️ HEIMDALL WORKFLOW ENGINE - VOLLSTÄNDIGES SETUP SCRIPT
+ "Der Wächter der Brücke zwischen Plan und Realität"
+ ===================================================================
 
-# --- NEU: Setze das Arbeitsverzeichnis auf den Ort des Skripts ---
+ --- NEU: Setze das Arbeitsverzeichnis auf den Ort des Skripts ---
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path $scriptPath -Parent
 Set-Location $scriptDir
-# ------------------------------------------------------------------
+ ------------------------------------------------------------------
 
 Write-Host @"
 🛡️ ========================================
@@ -17,7 +17,7 @@ Write-Host @"
 ========================================
 "@ -ForegroundColor Cyan
 
-# Prüfe Grundvoraussetzungen
+ Prüfe Grundvoraussetzungen
 if (!(Test-Path "package.json")) {
     Write-Host "❌ Fehler: Nicht im Extension-Root-Verzeichnis!" -ForegroundColor Red
     Write-Host "💡 Bitte im VS Code Extension Projekt-Ordner ausführen" -ForegroundColor Yellow
@@ -26,13 +26,13 @@ if (!(Test-Path "package.json")) {
 
 Write-Host "✅ Extension-Projekt gefunden" -ForegroundColor Green
 
-# ===================================================================
-# PHASE 0: GRUNDSTRUKTUR & DATENMODELL
-# ===================================================================
+ ===================================================================
+ PHASE 0: GRUNDSTRUKTUR & DATENMODELL
+ ===================================================================
 
 Write-Host "`n📁 PHASE 0: Erstelle Heimdall-Grundstruktur..." -ForegroundColor Yellow
 
-# .heimdall Konfigurationsordner
+ .heimdall Konfigurationsordner
 if (!(Test-Path ".heimdall")) {
     New-Item -ItemType Directory -Name ".heimdall" | Out-Null
     Write-Host "✅ .heimdall/ Konfigurationsordner erstellt" -ForegroundColor Green
@@ -40,7 +40,7 @@ if (!(Test-Path ".heimdall")) {
     Write-Host "✅ .heimdall/ bereits vorhanden" -ForegroundColor Green
 }
 
-# rules.json erstellen
+ rules.json erstellen
 $rulesJson = @"
 {
   "project_rules": {
@@ -66,58 +66,58 @@ $rulesJson = @"
 $rulesJson | Out-File -FilePath ".heimdall/rules.json" -Encoding UTF8 -Force
 Write-Host "✅ .heimdall/rules.json erstellt" -ForegroundColor Green
 
-# core_directives.md erstellen
+ core_directives.md erstellen
 $coreDirectives = @"
-# 🛡️ Heimdall Core Directives
+ 🛡️ Heimdall Core Directives
 
-## Mission Statement
+ Mission Statement
 Heimdall ist der Wächter der Brücke zwischen Plan und Realität.
 Unser Ziel: Die Bekämpfung der Integrationsschuld durch strukturierte Task-Klassifizierung.
 
-## Die Freya & Trae Methodologie
+ Die Freya & Trae Methodologie
 
-### Freya (Lead Architect & Executor)
+ Freya (Lead Architect & Executor)
 - **Prinzip**: Plan → Approve → Execute → Verify
 - **Fokus**: Sorgfältige Planung und strukturierte Ausführung
 - **Verantwortung**: Architektur und Implementation
 
-### Trae (Reality Anchor & Quality Gatekeeper)  
+ Trae (Reality Anchor & Quality Gatekeeper)  
 - **Prinzip**: Unerbittliche Prüfung von Code, Daten und Integration
 - **Fokus**: Bekämpfung der Integrationsschuld
 - **Verantwortung**: Quality Gates und Reality Checks
 
-## Der Trae-Workflow: Dreistufiges Klassifizierungssystem
+ Der Trae-Workflow: Dreistufiges Klassifizierungssystem
 
-### 1. [PROTOTYPE] 🔬
+ 1. [PROTOTYPE] 🔬
 - **Definition**: Die Idee funktioniert isoliert, oft mit Mock-Daten
 - **Kriterien**: Proof-of-Concept implementiert
 - **Nächster Schritt**: trae::promote zu INTEGRATION_CANDIDATE
 
-### 2. [INTEGRATION_CANDIDATE] ⚙️  
+ 2. [INTEGRATION_CANDIDATE] ⚙️  
 - **Definition**: Prototyp zur Integration ausgewählt, aktive Entwicklung
 - **Kriterien**: Code implementiert, aber noch nicht produktionsreif
 - **Nächster Schritt**: trae::reality-check für PRODUCTION
 
-### 3. [PRODUCTION] ✅
+ 3. [PRODUCTION] ✅
 - **Definition**: Vollständig integriert, getestet und dokumentiert
 - **Kriterien**: Alle Quality Gates bestanden
 - **Status**: Produktiv einsetzbar
 
-## Quality Gates (Reality Check Kriterien)
+ Quality Gates (Reality Check Kriterien)
 
-### Pflicht-Kriterien für PRODUCTION:
+ Pflicht-Kriterien für PRODUCTION:
 - ✅ **Tests**: Unit-Tests und Integration-Tests vorhanden
 - ✅ **Dokumentation**: Code dokumentiert und Benutzer-Dokumentation vorhanden  
 - ✅ **Code-Qualität**: ESLint/Prettier Standards eingehalten
 - ✅ **Integration**: Abhängigkeiten erfüllt und getestet
 
-### KI-Agent Richtlinien:
+ KI-Agent Richtlinien:
 - Generiere immer Tests für neuen Code
 - Dokumentation muss verständlich und vollständig sein
 - Befolge die project_rules strikt
 - Verwende den default_persona aus den agent_rules
 
-## Trae-Befehle
+ Trae-Befehle
 
 - **trae::classify**: Task einem Status zuordnen
 - **trae::promote**: Task zum nächsten Level befördern  
@@ -136,24 +136,24 @@ Unser Ziel: Die Bekämpfung der Integrationsschuld durch strukturierte Task-Klas
 $coreDirectives | Out-File -FilePath ".heimdall/core_directives.md" -Encoding UTF8 -Force
 Write-Host "✅ .heimdall/core_directives.md erstellt" -ForegroundColor Green
 
-# ===================================================================
-# DEMO TASK FILES ERSTELLEN
-# ===================================================================
+ ===================================================================
+ DEMO TASK FILES ERSTELLEN
+ ===================================================================
 
 Write-Host "`n📝 Erstelle Demo-Task-Dateien..." -ForegroundColor Yellow
 
-# Hauptprojekt tasks.md
+ Hauptprojekt tasks.md
 $mainTasks = @"
-# 🛡️ Heimdall Workflow Engine - Development Tasks
+ 🛡️ Heimdall Workflow Engine - Development Tasks
 
-## PHASE 0: GRUNDSTRUKTUR & DATENMODELL ✅
+ PHASE 0: GRUNDSTRUKTUR & DATENMODELL ✅
 
 - [x] [PRODUCTION] Extension-Projekt aufsetzen
 - [x] [PRODUCTION] TypeScript, ESLint und Prettier konfigurieren  
 - [x] [PRODUCTION] Regel-basiertes Datenmodell definieren
 - [x] [PRODUCTION] Task-Parser implementieren
 
-## PHASE 1: DIE "TRAE"-BEFEHLE
+ PHASE 1: DIE "TRAE"-BEFEHLE
 
 - [x] [PRODUCTION] trae::classify Befehl implementieren
 - [x] [PRODUCTION] trae::promote Befehl implementieren  
@@ -161,7 +161,7 @@ $mainTasks = @"
 - [ ] [PROTOTYPE] KI-Integration für automatische Test-Generierung
 - [ ] [PROTOTYPE] Git-Integration für automatische Commits bei Status-Änderungen
 
-## PHASE 2: UI & VISUALISIERUNG
+ PHASE 2: UI & VISUALISIERUNG
 
 - [x] [PRODUCTION] Webview-Panel Dashboard erstellen
 - [x] [PRODUCTION] trae::report-debt implementieren
@@ -169,7 +169,7 @@ $mainTasks = @"
 - [ ] [PROTOTYPE] Multi-User WebSocket-Synchronisation
 - [ ] [PROTOTYPE] Erweiterte Dashboard-Visualisierungen (Charts, Diagramme)
 
-## PHASE 3: ADVANCED FEATURES (Zukünftig)
+ PHASE 3: ADVANCED FEATURES (Zukünftig)
 
 - [ ] [PROTOTYPE] Llama-Coder Integration für Reality Checks
 - [ ] [PROTOTYPE] GitHub Issues Synchronisation
@@ -178,7 +178,7 @@ $mainTasks = @"
 - [ ] [PROTOTYPE] Automatische Dokumentations-Generierung
 - [ ] [PROTOTYPE] Integration Debt Alerts und Notifications
 
-## BUG FIXES & IMPROVEMENTS
+ BUG FIXES & IMPROVEMENTS
 
 - [ ] [INTEGRATION_CANDIDATE] Task-Parser Performance optimieren
 - [ ] [PROTOTYPE] Error Handling für File-System Operationen verbessern
@@ -196,17 +196,17 @@ $mainTasks = @"
 $mainTasks | Out-File -FilePath "tasks.md" -Encoding UTF8 -Force
 Write-Host "✅ tasks.md mit Demo-Tasks erstellt" -ForegroundColor Green
 
-# Erstelle test-workspace für Extension Development
+ Erstelle test-workspace für Extension Development
 if (!(Test-Path "test-workspace")) {
     New-Item -ItemType Directory -Name "test-workspace" | Out-Null
     Write-Host "✅ test-workspace/ für Extension Development erstellt" -ForegroundColor Green
 }
 
-# Demo-Tasks für test-workspace
+ Demo-Tasks für test-workspace
 $testTasks = @"
-# 🚀 Beispiel-Projekt: E-Commerce Platform
+ 🚀 Beispiel-Projekt: E-Commerce Platform
 
-## Authentication System
+ Authentication System
 
 - [ ] [PROTOTYPE] User Registration implementieren
 - [ ] [PROTOTYPE] Login/Logout Funktionalität
@@ -214,7 +214,7 @@ $testTasks = @"
 - [x] [PRODUCTION] OAuth2 Google Integration
 - [x] [PRODUCTION] JWT Token Management
 
-## Shopping Cart Features  
+ Shopping Cart Features  
 
 - [x] [PRODUCTION] Add to Cart Funktionalität
 - [x] [PRODUCTION] Cart Persistence im LocalStorage
@@ -222,14 +222,14 @@ $testTasks = @"
 - [ ] [PROTOTYPE] Wishlist Feature
 - [ ] [PROTOTYPE] Cart Abandonment Emails
 
-## Payment Processing
+ Payment Processing
 
 - [ ] [INTEGRATION_CANDIDATE] Stripe Integration
 - [ ] [PROTOTYPE] PayPal Integration  
 - [ ] [PROTOTYPE] Invoice Generation
 - [ ] [PROTOTYPE] Refund System
 
-## Admin Dashboard
+ Admin Dashboard
 
 - [x] [PRODUCTION] User Management Interface
 - [ ] [INTEGRATION_CANDIDATE] Product Management
@@ -237,7 +237,7 @@ $testTasks = @"
 - [ ] [PROTOTYPE] Analytics Dashboard
 - [ ] [PROTOTYPE] Reporting System
 
-## Performance & Optimization
+ Performance & Optimization
 
 - [ ] [PROTOTYPE] Database Query Optimization
 - [ ] [PROTOTYPE] CDN Integration für Static Assets
@@ -256,13 +256,13 @@ $testTasks = @"
 $testTasks | Out-File -FilePath "test-workspace/project-tasks.md" -Encoding UTF8 -Force
 Write-Host "✅ test-workspace/project-tasks.md erstellt" -ForegroundColor Green
 
-# ===================================================================
-# EXTENSION KOMPILIERUNG & SETUP
-# ===================================================================
+ ===================================================================
+ EXTENSION KOMPILIERUNG & SETUP
+ ===================================================================
 
 Write-Host "`n🔨 PHASE 1: Extension kompilieren..." -ForegroundColor Yellow
 
-# Prüfe ob node_modules existiert
+ Prüfe ob node_modules existiert
 if (!(Test-Path "node_modules")) {
     Write-Host "📦 Installiere Dependencies..." -ForegroundColor Yellow
     try {
@@ -277,7 +277,7 @@ if (!(Test-Path "node_modules")) {
     Write-Host "✅ node_modules bereits vorhanden" -ForegroundColor Green
 }
 
-# TypeScript kompilieren
+ TypeScript kompilieren
 Write-Host "🔨 Kompiliere TypeScript..." -ForegroundColor Yellow
 try {
     $compileOutput = npm run compile 2>&1
@@ -293,7 +293,7 @@ try {
     exit 1
 }
 
-# Prüfe Ausgabe
+ Prüfe Ausgabe
 if (Test-Path "out/extension.js") {
     $fileSize = (Get-Item "out/extension.js").Length
     Write-Host "✅ extension.js erstellt ($('{0:N0}' -f $fileSize) bytes)" -ForegroundColor Green
@@ -302,13 +302,13 @@ if (Test-Path "out/extension.js") {
     exit 1
 }
 
-# ===================================================================
-# LAUNCH CONFIGURATION
-# ===================================================================
+ ===================================================================
+ LAUNCH CONFIGURATION
+ ===================================================================
 
 Write-Host "`n⚙️ Konfiguriere Debug-Umgebung..." -ForegroundColor Yellow
 
-# .vscode Ordner erstellen falls nicht vorhanden
+ .vscode Ordner erstellen falls nicht vorhanden
 if (!(Test-Path ".vscode")) {
     New-Item -ItemType Directory -Name ".vscode" | Out-Null
 }

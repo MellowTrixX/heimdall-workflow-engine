@@ -1,6 +1,6 @@
 ---
 
-# Task Management System in VSCode: The Freya & Heimdall Methodology
+ Task Management System in VSCode: The Freya & Heimdall Methodology
 
 <img width="991" height="526" alt="01 Cover" src="https://github.com/user-attachments/assets/cd7e2e44-c554-466a-af1a-5a2aea8ce1f7" />
 
@@ -8,20 +8,20 @@ This repository contains the concept and architecture for an integrated task man
 
 > "Too many shells, not enough kernels. We need to shift our focus from the quantity of features to the quality of integration."
 
-## The Problem: Integration Debt
+ The Problem: Integration Debt
 
 In many projects, we observe a pattern that leads to technical debt and paralyzes progress. There is a lack of a clear definition of "done" and a structured process that prioritizes quality over quantity.
 
 <img width="1284" height="755" alt="03 Challanges" src="https://github.com/user-attachments/assets/06bbaa30-a5bf-4f96-acf3-981dbd919490" />
 
-## The Solution: The Freya & Heimdall Philosophy
+ The Solution: The Freya & Heimdall Philosophy
 
 Our methodology is based on two complementary principles:
 
 - **Freya (Lead Architect & Executor ):** Represents meticulous planning, structured execution, and verification. The principle is: `Plan -> Approve -> Execute -> Verify`.
 - **Heimdall (Reality Anchor & Quality Gatekeeper):** Represents the relentless auditing of code, data, and integration. Heimdall combats integration debt through a strict classification process.
 
-### The Heimdall Workflow: A Three-Stage Classification System
+ The Heimdall Workflow: A Three-Stage Classification System
 
 The core of the system is a clearly defined lifecycle for each task, mapped directly in VSCode and Git:
 
@@ -31,7 +31,7 @@ The core of the system is a clearly defined lifecycle for each task, mapped dire
 
 <img width="1127" height="960" alt="06 Workflow-Comparison" src="https://github.com/user-attachments/assets/be9b7496-7784-4dd8-885b-61b1bb9b1126" />
 
-## Technical Architecture in VSCode
+ Technical Architecture in VSCode
 
 The implementation is a VSCode extension that utilizes the following core components:
 
@@ -42,14 +42,14 @@ The implementation is a VSCode extension that utilizes the following core compon
 
 <img width="968" height="1155" alt="14 extension" src="https://github.com/user-attachments/assets/9658f5b9-977a-44a2-9509-894e13faf5e3" />
 
-### Core Commands
+ Core Commands
 
 - `Heimdall::classify`: Assigns a task to one of the three states.
 - `Heimdall::promote`: Elevates a `[PROTOTYPE]` to an `[INTEGRATION CANDIDATE]`.
 - `Heimdall::reality-check`: Performs the final audit for promotion to the `[PRODUCTION]` state.
 - `Heimdall::report-debt`: Analyzes and visualizes the current integration debt.
 
-## Next Steps
+ Next Steps
 
 1.  **Create the basic extension structure**
 2.  **Define the task management data model**
@@ -64,7 +64,7 @@ We invite the community to discuss and further develop this concept.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
-# Task-Management-System in VSCode: Die Freya & Heimdall Methodologie
+ Task-Management-System in VSCode: Die Freya & Heimdall Methodologie
 
 
 
@@ -74,7 +74,7 @@ Dieses Repository enthält das Konzept und die Architektur für ein integriertes
 
 > "Zu viele Hüllen, zu wenig Kerne. Wir müssen von Quantität der Features auf Qualität der Integration umdenken."
 
-## Das Problem: Die Integrationsschuld
+ Das Problem: Die Integrationsschuld
 
 In vielen Projekten beobachten wir ein Muster, das zu technischen Schulden führt und den Fortschritt lähmt. Es fehlt eine klare Definition von "fertig" und ein strukturierter Prozess, der Qualität über Quantität stellt.
 
@@ -82,14 +82,14 @@ In vielen Projekten beobachten wir ein Muster, das zu technischen Schulden führ
 
 <img width="1284" height="755" alt="03 Challanges" src="https://github.com/user-attachments/assets/06bbaa30-a5bf-4f96-acf3-981dbd919490" />
 
-## Die Lösung: Freya & Heimdall Philosophie
+ Die Lösung: Freya & Heimdall Philosophie
 
 Unsere Methodologie basiert auf zwei komplementären Prinzipien:
 
 - **Freya (Lead Architect & Executor):** Steht für sorgfältige Planung, strukturierte Ausführung und Verifikation. Der Grundsatz lautet: `Plan -> Approve -> Execute -> Verify`.
 - **Heimdall (Realitäts-Anker & Qualitäts-Gatekeeper):** Steht für die unerbittliche Prüfung von Code, Daten und Integration. Heimdall bekämpft die Integrationsschuld durch einen strengen Klassifizierungsprozess.
 
-### Der Heimdall-Workflow: Ein dreistufiges Klassifizierungssystem
+ Der Heimdall-Workflow: Ein dreistufiges Klassifizierungssystem
 
 Das Herzstück des Systems ist ein klar definierter Lebenszyklus für jede Aufgabe, der direkt in VSCode und Git abgebildet wird:
 
@@ -102,7 +102,7 @@ Das Herzstück des Systems ist ein klar definierter Lebenszyklus für jede Aufga
 <img width="1127" height="960" alt="06 Workflow-Comparison" src="https://github.com/user-attachments/assets/be9b7496-7784-4dd8-885b-61b1bb9b1126" />
 
 
-## Technische Architektur in VSCode
+ Technische Architektur in VSCode
 
 Die Umsetzung erfolgt als VSCode-Erweiterung, die folgende Kernkomponenten nutzt:
 
@@ -116,14 +116,14 @@ Die Umsetzung erfolgt als VSCode-Erweiterung, die folgende Kernkomponenten nutzt
 <img width="968" height="1155" alt="14 extension" src="https://github.com/user-attachments/assets/9658f5b9-977a-44a2-9509-894e13faf5e3" />
 
 
-### Kernbefehle
+ Kernbefehle
 
 - `Heimdall::classify`: Ordnet einen Task einem der drei Zustände zu.
 - `Heimdall::promote`: Stuft einen `[PROTOTYP]` zu einem `[INTEGRATIONS-KANDIDAT]` hoch.
 - `Heimdall::reality-check`: Führt die finale Prüfung für den `[PRODUKTIV]`-Status durch.
 - `Heimdall::report-debt`: Analysiert und visualisiert die aktuelle Integrationsschuld.
 
-## Nächste Schritte
+ Nächste Schritte
 
 1.  **Extension-Grundstruktur erstellen**
 2.  **Task-Management-Datenmodell definieren**

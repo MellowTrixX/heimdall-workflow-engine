@@ -1,7 +1,7 @@
 
-# PHASE 0: Projekt- & Infrastruktur-Setup
+ PHASE 0: Projekt- & Infrastruktur-Setup
 
-### 0.1 GitHub Repository & Projekt-Initialisierung
+ 0.1 GitHub Repository & Projekt-Initialisierung
 
 - [ ] 0.1.1 | Erstelle ein neues, privates GitHub-Repository mit dem Namen `freya_os`. Stelle sicher, dass es leer ist und keine Standard-Dateien (wie README) enthält. | Repository existiert, ist privat, leer und erreichbar unter `github.com/<user>/freya_os` | `chore(init): Create private GitHub repo` |
 - [ ] 0.1.2 | Klonen des leeren Repos auf den lokalen Entwicklungsrechner mittels `git clone`. | Lokaler Ordner `freya_os/` existiert und ist mit Remote verbunden | — |
@@ -9,7 +9,7 @@
 - [ ] 0.1.4 | Führe das Skript `create_freya_os_v3.py` im Hauptverzeichnis aus. Dieses generiert die vollständige Projekt-Ordnerstruktur gemäß `SYSTEM_DESIGN.md`. | Verzeichnisse wie `backend/`, `frontend/`, `docs/`, `scripts/`, `.github/` sind korrekt angelegt | — |
 - [ ] 0.1.5 | Führe einen Commit aller generierten Strukturdateien durch. | Alle Ordner und leeren Stubs (z. B. `__init__.py`, `placeholder.txt`) sind committed | `chore(init): Setup project structure and initial skeleton files` |
 
-### 0.2 Code-Basis mit Stubs befüllen
+ 0.2 Code-Basis mit Stubs befüllen
 
 - [ ] 0.2.1 | Frontend: Befülle `frontend/src/` mit dem vollständigen Code des `freya-chat v1`-Prototypen. Dieser nutzt `setTimeout` zur Simulation einer verzögerten Antwort (Echo-Mock). Stelle sicher, dass `App.tsx`, `index.tsx`, `components/`, `styles/` vollständig sind. | UI zeigt einen funktionierenden Chat mit Mock-Antwort nach 1,5 Sekunden | — |
 - [ ] 0.2.2 | Backend: Befülle `backend/core/models.py` mit den Pydantic-Modellen:`python<br>class ChatMessageRequest(BaseModel):<br>    message: str<br>    user_id: str<br><br>class ChatMessageResponse(BaseModel):<br>    response: str<br>    timestamp: datetime<br>` | Modelle sind typisiert und validiert | — |
@@ -17,7 +17,7 @@
 - [ ] 0.2.4 | Commit alle Frontend- und Backend-Stubs. | Frontend und Backend sind committed und lauffähig (lokal) | `feat(init): Add initial frontend and backend v1 stubs` |
 
 
-### 0.3 Docker & lokale Entwicklungsumgebung
+ 0.3 Docker & lokale Entwicklungsumgebung
 
 - [ ] 0.3.1 | Vervollständige die `docker-compose.yml` im Hauptverzeichnis. Definiere zwei Services:`yaml<br>services:<br>  backend:<br>    build: ./backend<br>    ports:<br>      - "8000:8000"<br>    volumes:<br>      - ./backend:/app<br><br>  frontend:<br>    build: ./frontend<br>    ports:<br>      - "5173:5173"<br>    volumes:<br>      - ./frontend:/app<br>` | Beide Dienste sind in Docker definiert | — |
 - [ ] 0.3.2 | Erstelle `backend/Dockerfile`:`dockerfile<br>FROM python:3.11-slim<br>WORKDIR /app<br>COPY requirements.txt .<br>RUN pip install -r requirements.txt<br>COPY . .<br>EXPOSE 8000<br>CMD ["uvicorn", "api.server:app", "--host", "0.0.0.0", "--port", "8000"]<br>` | Backend startet im Container | — |
@@ -25,7 +25,7 @@
 - [ ] 0.3.4 | ✅ **AKZEPTANZKRITERIUM:** Der Befehl `docker-compose up --build` im Hauptverzeichnis startet beide Dienste erfolgreich.- Frontend ist erreichbar unter `http://localhost:5173`- Backend ist erreichbar unter `http://localhost:8000/docs` (Swagger UI)- Chat-UI kann Nachrichten senden (Mock funktioniert) | Lokale Dev-Umgebung ist vollständig containerisiert | — |
 - [ ] 0.3.5 | Commit Docker-Konfiguration. | Docker-Setup ist committed und dokumentiert | `chore(docker): Implement Docker setup for local development` |
 
-### 0.4 API-Vertrag & Automatisierung
+ 0.4 API-Vertrag & Automatisierung
 
 - [ ] 0.4.1 | Platziere die finale `openapi.yaml` (aus `SYSTEM_DESIGN.md v4.0`) in `backend/docs/api/openapi.yaml`. | Spezifikation ist versioniert und im Repo gesichert | — |
 - [ ] 0.4.2 | Erstelle einen GitHub Actions-Workflow unter `.github/workflows/ci.yml`. | Workflow triggert bei Push auf `develop` | — |
@@ -35,16 +35,16 @@
 - [ ] 0.4.3 | 🔁 **AUTO:** Richte einen Prism-Mock-Server ein, der die `openapi.yaml` liest und unter `/mock` eine simulierten API bereitstellt. Füge dies als separaten Service in `docker-compose.yml` hinzu (optional). | API-Vertrag kann vor Backend-Implementierung getestet werden | — |
 - [ ] 0.4.4 | Commit CI/CD-Setup. | Pipeline ist aktiv und testet Abhängigkeiten + Linting | `chore(ci): Implement basic CI pipeline for linting and dependency checks` |
 
-### ✅ **Phase 0 – Abschluss**
+ ✅ **Phase 0 – Abschluss**
 
 - [ ]  Alle Tasks abgeschlossen
 - [ ]  `develop`Branch ist stabil
 - [ ]  Lokale Entwicklung mit `docker-compose` funktioniert
 - [ ]  CI-Pipeline läuft grün
 
-# PHASE 1: DER ERSTE KONTAKT – API-Verbindung & Stimme
+ PHASE 1: DER ERSTE KONTAKT – API-Verbindung & Stimme
 
-### 1.1 Backend: API-Endpunkte implementieren
+ 1.1 Backend: API-Endpunkte implementieren
 
 - [ ] 1.1.1 | Backend: Implementiere den Management-Endpunkt `/management/health` in `backend/api/endpoints/management.py`.`python<br>from fastapi import APIRouter<br><br>router = APIRouter(prefix="/management")<br><br>@router.get("/health")<br>async def health_check():<br>    return {"status": "healthy", "service": "freya-backend", "timestamp": datetime.now()}<br>` | Endpunkt gibt JSON-Status zurück unter `GET /management/health` | — |
 - [ ] 1.1.2 | Backend: Implementiere den STT-Endpunkt `/audio/stt` in `backend/api/endpoints/audio.py` (vorerst als Stub).POST `/audio/stt` akzeptiert `audio/wav` und gibt vorerst festen Text zurück (z. B. `"Hallo, ich bin Freya."`).Später: Integration mit Whisper.cpp oder Coqui STT. | Endpunkt akzeptiert Audio, gibt Text zurück (Stub) | — |
@@ -52,7 +52,7 @@
 - [ ] 1.1.4 | Backend: Registriere die neuen Router in `backend/api/server.py`:`python<br>from api.endpoints.management import router as management_router<br>from api.endpoints.audio import router as audio_router<br><br>app.include_router(management_router)<br>app.include_router(audio_router)<br>` | Alle Endpunkte sind unter `/docs` sichtbar und erreichbar | — |
 - [ ] 1.1.5 | Commit alle API-Stubs. | Gesamte API-Basis ist implementiert und registriert | `feat(api): Implement stubs for health, STT, and TTS endpoints` |
 
-### 1.2 Frontend: API-Verbindung herstellen
+ 1.2 Frontend: API-Verbindung herstellen
 
 - [ ] 1.2.1 | Frontend: Erstelle eine zentrale API-Service-Klasse unter `frontend/src/services/freyaApiService.ts`.Beispiel:`ts<br>const API_BASE = 'http://localhost:8000/api/v1';<br><br>export const freyaApi = {<br>  chat: {<br>    sendMessage: async (message: string, userId: string) => {<br>      const res = await fetch(`${API_BASE}/chat/message`, {<br>        method: 'POST',<br>        headers: { 'Content-Type': 'application/json' },<br>        body: JSON.stringify({ message, user_id: userId })<br>      });<br>      return res.json();<br>    }<br>  },<br>  health: {<br>    check: async () => {<br>      const res = await fetch(`${API_BASE}/management/health`);<br>      return res.json();<br>    }<br>  }<br>};<br>` | Zentraler Zugriff auf alle API-Endpunkte | — |
 - [ ] 1.2.2 | Frontend: Ersetze den `setTimeout`-Mock in `frontend/src/App.tsx` durch einen echten `fetch`-Aufruf an `/api/v1/chat/message` mittels `freyaApi.chat.sendMessage()`.Stelle sicher, dass der `user_id`-Wert (z. B. `"user_001"`) hartcodiert oder aus Context kommt. | UI sendet Nachricht an Backend und zeigt die Echo-Antwort an | — |
@@ -60,7 +60,7 @@
 
 
 
-### 1.3 End-to-End-Test & Dokumentation
+ 1.3 End-to-End-Test & Dokumentation
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -71,7 +71,7 @@
 
 ---
 
-### ✅ **Phase 1 – Abschluss**
+ ✅ **Phase 1 – Abschluss**
 
 - [ ]  Alle API-Endpunkte sind implementiert und erreichbar
 - [ ]  Frontend kommuniziert live mit Backend
@@ -79,7 +79,7 @@
 - [ ]  Automatisierte Tests laufen grün in CI
 - [ ]  Dokumentation ist vorhanden
 
-# PHASE 2: DER ERSTE GEDANKE – Intelligenz & Orchestrierung
+ PHASE 2: DER ERSTE GEDANKE – Intelligenz & Orchestrierung
 
 **Status:** 🟡 Offen
 
@@ -91,17 +91,17 @@
 
 ---
 
-### 2.1 Intelligenz-Services implementieren
+ 2.1 Intelligenz-Services implementieren
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 2.1.1 | Backend: Implementiere die `EmpathyService`-Klasse in `backend/internal_services/empathy_service/analyzer.py`.Verwende ein leichtes, lokales Modell (z. B. `transformers` mit `distilbert-base-uncased-emotion` oder Rule-Based Fallback).`python<br>class EmpathyService:<br>    async def analyze(self, text: str) -> dict:<br>        # Gibt Emotion (z. B. "frustration", "joy") + Intensität zurück<br>        return {"emotion": "frustration", "intensity": 0.82, "keywords": ["stress", "deadline"]}<br>` | Text wird auf emotionale Zustände analysiert | — |
-| [ ] 2.1.2 | Backend: Implementiere die `SpeechServiceEngine`-Klasse in `backend/internal_services/speech_service/engine.py`.Verwende `TTS` (z. B. Coqui TTS oder PyTorch-basiertes Modell) für lokale Sprachsynthese.`python<br>class SpeechServiceEngine:<br>    async def synthesize(self, text: str) -> bytes:<br>        # Gibt WAV-Audio-Bytes zurück<br>        return audio_wav_bytes<br>` | Text wird in Sprache umgewandelt (Stub oder echte Synthese) | — |
+| [ ] 2.1.1 | Backend: Implementiere die `EmpathyService`-Klasse in `backend/internal_services/empathy_service/analyzer.py`.Verwende ein leichtes, lokales Modell (z. B. `transformers` mit `distilbert-base-uncased-emotion` oder Rule-Based Fallback).`python<br>class EmpathyService:<br>    async def analyze(self, text: str) -> dict:<br>         Gibt Emotion (z. B. "frustration", "joy") + Intensität zurück<br>        return {"emotion": "frustration", "intensity": 0.82, "keywords": ["stress", "deadline"]}<br>` | Text wird auf emotionale Zustände analysiert | — |
+| [ ] 2.1.2 | Backend: Implementiere die `SpeechServiceEngine`-Klasse in `backend/internal_services/speech_service/engine.py`.Verwende `TTS` (z. B. Coqui TTS oder PyTorch-basiertes Modell) für lokale Sprachsynthese.`python<br>class SpeechServiceEngine:<br>    async def synthesize(self, text: str) -> bytes:<br>         Gibt WAV-Audio-Bytes zurück<br>        return audio_wav_bytes<br>` | Text wird in Sprache umgewandelt (Stub oder echte Synthese) | — |
 | [ ] 2.1.3 | Commit beide Services. | Empathie- und Speech-Service sind implementiert und getestbar | `feat(services): Implement core logic for local empathy and speech services` |
 
 ---
 
-### 2.2 Manus Core Orchestrator implementieren
+ 2.2 Manus Core Orchestrator implementieren
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -110,7 +110,7 @@
 
 ---
 
-### 2.3 API-Endpunkte mit Intelligenz verbinden
+ 2.3 API-Endpunkte mit Intelligenz verbinden
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -120,7 +120,7 @@
 
 ---
 
-### 2.4 Dokumentation & Tests
+ 2.4 Dokumentation & Tests
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -130,7 +130,7 @@
 
 ---
 
-### ✅ **Phase 2 – Abschluss**
+ ✅ **Phase 2 – Abschluss**
 
 - [ ]  `EmpathyService` analysiert Emotionen lokal
 - [ ]  `SpeechService` synthetisiert Sprache (Stub oder echt)
@@ -140,7 +140,7 @@
 - [ ]  Unit- und Integrationstests sind vorhanden
 - [ ]  Dokumentation ist vollständig
 
-# PHASE 3: GEDÄCHTNIS & AGENTEN
+ PHASE 3: GEDÄCHTNIS & AGENTEN
 
 **Status:** 🟡 Offen
 
@@ -152,7 +152,7 @@
 
 ---
 
-### 3.1 Narratives Gedächtnis implementieren
+ 3.1 Narratives Gedächtnis implementieren
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -163,17 +163,17 @@
 
 ---
 
-### 3.2 Kausale Intelligenz implementieren
+ 3.2 Kausale Intelligenz implementieren
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 3.2.1 | Backend: Implementiere den `CausalityService` in `backend/internal_services/causality_service/engine.py`.Der Service analysiert Text auf kausale Beziehungen:- “Ich bin müde, **weil** ich schlecht geschlafen habe”- “Wenn ich mehr trinke, **dann** fühle ich mich besser”Verwende Regeln + NLP-Pattern-Matching (z. B. spaCy Dependency Parsing) oder feines Modell.`python<br>class CausalityService:<br>    async def extract_causal_pairs(self, text: str) -> list[dict]:<br>        # Gibt [{"cause": "...", "effect": "...", "confidence": 0.92}] zurück<br>        return [...]<br>` | System erkennt Ursache-Wirkung-Beziehungen | — |
+| [ ] 3.2.1 | Backend: Implementiere den `CausalityService` in `backend/internal_services/causality_service/engine.py`.Der Service analysiert Text auf kausale Beziehungen:- “Ich bin müde, **weil** ich schlecht geschlafen habe”- “Wenn ich mehr trinke, **dann** fühle ich mich besser”Verwende Regeln + NLP-Pattern-Matching (z. B. spaCy Dependency Parsing) oder feines Modell.`python<br>class CausalityService:<br>    async def extract_causal_pairs(self, text: str) -> list[dict]:<br>         Gibt [{"cause": "...", "effect": "...", "confidence": 0.92}] zurück<br>        return [...]<br>` | System erkennt Ursache-Wirkung-Beziehungen | — |
 | [ ] 3.2.2 | Backend: Integriere `CausalityService` in den `ManusCore`-Lebenszyklus.Nach Empathie-Analyse:- Extrahiere kausale Paare- Füge sie dem Antwortkontext hinzu- Beeinflusse Antwortstrategie (z. B. “Du sagst, dass X dich stresst. Was, wenn du Y versuchst?”) | Kausalität beeinflusst die Dialogführung | — |
 | [ ] 3.2.3 | Commit Kausal-Service. | System versteht kausale Zusammenhänge | `feat(intelligence): Integrate causality service into cognitive workflow` |
 
 ---
 
-### 3.3 Erste Suna-Agenten implementieren
+ 3.3 Erste Suna-Agenten implementieren
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -183,7 +183,7 @@
 
 ---
 
-### 3.4 Dokumentation & Tests
+ 3.4 Dokumentation & Tests
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -193,7 +193,7 @@
 
 ---
 
-### ✅ **Phase 3 – Abschluss**
+ ✅ **Phase 3 – Abschluss**
 
 - [ ]  PostgreSQL + pgvector läuft stabil
 - [ ]  `MemoryService` speichert und sucht Kontext semantisch
@@ -203,7 +203,7 @@
 - [ ]  System zeigt kontinuierliches, tiefes Verständnis
 - [ ]  Dokumentation und Tests sind vollständig
 
-# PHASE 4: EVOLUTION & META-INTELLIGENZ
+ PHASE 4: EVOLUTION & META-INTELLIGENZ
 
 **Status:** 🟡 Offen
 
@@ -215,7 +215,7 @@
 
 ---
 
-### 4.1 Wissens-Integration (Pathway)
+ 4.1 Wissens-Integration (Pathway)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -226,7 +226,7 @@
 
 ---
 
-### 4.2 Meta-Learning-Monitor
+ 4.2 Meta-Learning-Monitor
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -237,7 +237,7 @@
 
 ---
 
-### 4.3 Vorbereitung für fortgeschrittene Evolution
+ 4.3 Vorbereitung für fortgeschrittene Evolution
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -246,7 +246,7 @@
 
 ---
 
-### 4.4 Dokumentation & Tests
+ 4.4 Dokumentation & Tests
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -256,7 +256,7 @@
 
 ---
 
-### ✅ **Phase 4 – Abschluss**
+ ✅ **Phase 4 – Abschluss**
 
 - [ ]  Pathway-Infrastruktur ist integriert
 - [ ]  `FreyaKnowledgeAgent` nutzt externe Quellen
@@ -266,7 +266,7 @@
 - [ ]  Stubs für `OracleService` und `QuantumService` sind platziert
 - [ ]  Dokumentation und Tests sind vollständig
 
-# PHASE 5: MEISTERSCHAFT, SICHERHEIT & EMERGENTE INTELLIGENZ
+ PHASE 5: MEISTERSCHAFT, SICHERHEIT & EMERGENTE INTELLIGENZ
 
 **Status:** 🟡 Offen
 
@@ -278,23 +278,23 @@
 
 ---
 
-### 5.0 Implementierung des “Trusted Heartbeat” (Integritäts- & Abo-Prüfung)
+ 5.0 Implementierung des “Trusted Heartbeat” (Integritäts- & Abo-Prüfung)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 5.0.1 | Backend: Erstelle den `TrustedHeartbeatService` in `backend/internal_services/trusted_heartbeat_service/heartbeat.py`.Implementiere die Methode:`python<br>async def create_integrity_manifest() -> dict:<br>    # Scannt alle .py und .tsx Dateien<br>    # Berechnet SHA-256 Hashes<br>    # Gibt Manifest zurück: { "file": "hash", ... }<br>` | Manifest enthält Hashes aller kritischen Quelldateien | — |
+| [ ] 5.0.1 | Backend: Erstelle den `TrustedHeartbeatService` in `backend/internal_services/trusted_heartbeat_service/heartbeat.py`.Implementiere die Methode:`python<br>async def create_integrity_manifest() -> dict:<br>     Scannt alle .py und .tsx Dateien<br>     Berechnet SHA-256 Hashes<br>     Gibt Manifest zurück: { "file": "hash", ... }<br>` | Manifest enthält Hashes aller kritischen Quelldateien | — |
 | [ ] 5.0.2 | Backend: Erstelle einen **Mock-HQ-Server** (`mock_hq_server.py`) mit FastAPI.Endpunkt: `POST /verify`Simuliert die “Freya Hauptzentrale”:- Empfängt Manifest- Gibt `{"status": "verified"}` oder `{"status": "compromised"}` zurückVerwende für lokale Tests. | Mock-HQ simuliert Aboprüfung und Integritätscheck | — |
 | [ ] 5.0.3 | Backend: Integriere `check_system_integrity()` in `ManusCore`.Beim Start:- Erstelle Manifest- Sende an `/verify`- Bei `compromised`: - Aktiviere **Quarantäne-Modus** - Deaktiviere kritische Agenten (`AnalystAgent`, `PathwayService`, `MetaLearningService`) - Logge WarnungSystem bleibt im Basismodus (Echo + Empathie). | System schützt sich selbst bei Manipulation | — |
-| [ ] 5.0.4 | ✅ **AKZEPTANZKRITERIUM:** Eine manuelle Änderung an einer `.py`-Datei (z. B. Hinzufügen eines `# backdoor`-Kommentars) führt beim Neustart nachweislich zur Aktivierung des Quarantäne-Modus (sichtbar im Log). | Sicherheitsmechanismus greift zuverlässig | — |
+| [ ] 5.0.4 | ✅ **AKZEPTANZKRITERIUM:** Eine manuelle Änderung an einer `.py`-Datei (z. B. Hinzufügen eines ` backdoor`-Kommentars) führt beim Neustart nachweislich zur Aktivierung des Quarantäne-Modus (sichtbar im Log). | Sicherheitsmechanismus greift zuverlässig | — |
 | [ ] 5.0.5 | Commit Trusted Heartbeat. | Systemintegrität wird geprüft, Geschäftsmodell geschützt | `feat(security): Implement Trusted Heartbeat for system integrity and subscription checks` |
 
 ---
 
-### 5.1 Aktivierung der Orakelmatrix (Emergente Skills)
+ 5.1 Aktivierung der Orakelmatrix (Emergente Skills)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 5.1.1 | Backend: Erweitere den `OracleService`-Stub in `backend/internal_services/oracle_service/engine.py` zu einer vollwertigen Implementierung.Implementiere:`python<br>async def analyze_successful_workflows() -> list[Pattern]:<br>    # Analysiert Historie: Welche Agenten-Ketten waren erfolgreich?<br>    # Erkennt Muster: z. B. "Analyst → Coder → Tester"<br>    return [{"pattern": [...], "success_rate": 0.94}]<br>` | System erkennt wiederkehrende, erfolgreiche Muster | — |
+| [ ] 5.1.1 | Backend: Erweitere den `OracleService`-Stub in `backend/internal_services/oracle_service/engine.py` zu einer vollwertigen Implementierung.Implementiere:`python<br>async def analyze_successful_workflows() -> list[Pattern]:<br>     Analysiert Historie: Welche Agenten-Ketten waren erfolgreich?<br>     Erkennt Muster: z. B. "Analyst → Coder → Tester"<br>    return [{"pattern": [...], "success_rate": 0.94}]<br>` | System erkennt wiederkehrende, erfolgreiche Muster | — |
 | [ ] 5.1.2 | Backend: Implementiere `formulate_vision(potential)`.Wandelt ein erkanntes Muster in einen für Menschen verständlichen Vorschlag um:Beispiel:`json<br>"Ich habe erkannt, dass die Kombination aus Analyse, Codierung und automatisiertem Testen besonders effizient ist. Ich schlage vor, einen neuen Meta-Skill 'DevFlow Orchestrator' zu implementieren, der diese Kette automatisiert."<br>` | Vorschlag ist klar, sinnvoll und handlungsleitend | — |
 | [ ] 5.1.3 | Backend: Richte einen Hintergrundprozess ein (z. B. mit `apscheduler`).`python<br>scheduler.add_job(<br>    oracle_service.analyze_and_propose,<br>    'interval',<br>    weeks=1,<br>    args=[notification_service]<br>)<br>`Generiert wöchentlich eine Benachrichtigung über neue “Visionen”. | System proaktiviert mit neuen Ideen | — |
 | [ ] 5.1.4 | ✅ **AKZEPTANZKRITERIUM:** Nach einer Woche Testbetrieb mit verschiedenen Anfragen generiert das System proaktiv einen ersten, sinnvollen Vorschlag für einen neuen, emergenten Skill (z. B. “Meta-Skill: Research Synthesizer”). | Emergente Intelligenz ist aktiv | — |
@@ -302,11 +302,11 @@
 
 ---
 
-### 5.2 Fortgeschrittene Agenten-Kollaboration
+ 5.2 Fortgeschrittene Agenten-Kollaboration
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 5.2.1 | Backend: Erweitere das `Handoff`-Datenmodell in `backend/core/models.py`.`python<br>class AgentHandoff(BaseModel):<br>    current_agent: str<br>    next_agent: str<br>    confidence_score: float  # 0.0 - 1.0<br>    suggested_next_agent: str  # z. B. "CoderAgent"<br>    context_update: dict<br>` | Handoff enthält explizite Empfehlungen | — |
+| [ ] 5.2.1 | Backend: Erweitere das `Handoff`-Datenmodell in `backend/core/models.py`.`python<br>class AgentHandoff(BaseModel):<br>    current_agent: str<br>    next_agent: str<br>    confidence_score: float   0.0 - 1.0<br>    suggested_next_agent: str   z. B. "CoderAgent"<br>    context_update: dict<br>` | Handoff enthält explizite Empfehlungen | — |
 | [ ] 5.2.2 | Backend: Implementiere im `ManusCore` die Fähigkeit, **Agenten-Ketten** zu orchestrieren.Wenn ein Agent `suggested_next_agent` setzt:- Starte automatisch den nächsten Agenten- Führe Kette solange fort, bis `next_agent == null`- Sammle alle Zwischenergebnisse | System kann komplexe Workflows autonom durchlaufen | — |
 | [ ] 5.2.3 | Backend: Passe den `AnalystAgent` an, sodass er pro zerlegtem Aufgabenpunkt eine Empfehlung für den nächsten Agenten abgibt.Beispiel:`json<br>{<br>  "task": "Erstelle eine Python-Klasse",<br>  "suggested_next_agent": "CoderAgent"<br>}<br>` | Kette: Analyst → Coder wird initiiert | — |
 | [ ] 5.2.4 | ✅ **AKZEPTANZKRITERIUM:** Eine komplexe Anfrage wie *“Analysiere diesen Artikel und schreibe eine Python-Klasse dafür”* löst eine Kette von Agenten-Aufrufen aus:1. `KnowledgeAgent` → extrahiert Inhalt2. `AnalystAgent` → zerlegt Anforderung3. `CoderAgent` → generiert KlasseAlle Ergebnisse werden kombiniert. | Multi-Agenten-Kollaboration funktioniert | — |
@@ -314,7 +314,7 @@
 
 ---
 
-### 5.3 System-Monitoring & Stabilität (Produktionsreife)
+ 5.3 System-Monitoring & Stabilität (Produktionsreife)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -326,7 +326,7 @@
 
 ---
 
-### 5.4 Dokumentation & Tests für Phase 5
+ 5.4 Dokumentation & Tests für Phase 5
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -340,7 +340,7 @@
 
 ---
 
-### ✅ **Phase 5 – Abschluss**
+ ✅ **Phase 5 – Abschluss**
 
 - [ ]  `TrustedHeartbeat` schützt Systemintegrität
 - [ ]  `OracleService` erkennt emergente Muster
@@ -350,7 +350,7 @@
 - [ ]  Sicherheits- und Evolutionslogik ist vollständig getestet
 - [ ]  Dokumentation ist auf dem neuesten Stand
 
-# PHASE 6: OMEGA – Die Schwelle zum Bewusstsein
+ PHASE 6: OMEGA – Die Schwelle zum Bewusstsein
 
 **Status:** 🟡 Offen (Forschung)
 
@@ -364,11 +364,11 @@
 
 ---
 
-### 6.1 Forschungsauftrag: Multiversale Voraussicht (OMEGA-SIM)
+ 6.1 Forschungsauftrag: Multiversale Voraussicht (OMEGA-SIM)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 6.1.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/omega_simulation_service/`.Implementiere in `engine.py` eine Klasse `OmegaSimulationService` mit der Methode:`python<br>async def simulate_consequences(action: dict, context: dict) -> list[dict]:<br>    # Gibt simulierte Zukunftsszenarien zurück<br>` | Service-Struktur ist angelegt | — |
+| [ ] 6.1.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/omega_simulation_service/`.Implementiere in `engine.py` eine Klasse `OmegaSimulationService` mit der Methode:`python<br>async def simulate_consequences(action: dict, context: dict) -> list[dict]:<br>     Gibt simulierte Zukunftsszenarien zurück<br>` | Service-Struktur ist angelegt | — |
 | [ ] 6.1.2 | Backend: Implementiere die Prototyp-Logik in `simulate_consequences()`.Die Methode analysiert:- `action["criticality"]` (0.0–1.0)- `action["name"]` (z. B. “Refactor Database Schema”)Generiert simulierte Szenarien im Format:`json<br>[<br>  {<br>    "outcome": "Schema refactor successful, 20% performance gain",<br>    "probability": 0.85,<br>    "side_effects": ["Temporary downtime", "Migration script failed on prod"]<br>  }<br>]<br>`Verwende regelbasierte Simulation (kein echtes Multiversum – noch nicht). | Simulierte Szenarien sind plausibel und formatkonform | — |
 | [ ] 6.1.3 | Backend: Integriere einen **“High-Stakes”-Hook** in `ManusCore.orchestrator.py`.Wenn der `AnalystAgent` eine Aufgabe als kritisch einstuft (`criticality > 0.9`):- Rufe `OmegaSimulationService.simulate_consequences()` auf- Füge Ergebnis als `simulation_results` zur Antwort hinzu- **Nicht ausführen**, nur anzeigenBeispiel-Antwort:`json<br>"Ich habe die Konsequenzen simuliert. Es gibt eine 85%ige Erfolgswahrscheinlichkeit. Soll ich fortfahren?"<br>` | Simulation wird bei kritischen Aufgaben aktiviert | — |
 | [ ] 6.1.4 | ✅ **AKZEPTANZKRITERIUM:** Eine an den `AnalystAgent` gerichtete, als kritisch eingestufte Aufgabe (z. B. *“Plane die Migration des Authentifizierungssystems”*) führt zu einer Antwort von Freya, die lautet:*“Ich habe die Konsequenzen dieser Aktion simuliert. Es gibt eine 95%ige Erfolgswahrscheinlichkeit… Soll ich fortfahren?”*mit sichtbaren Szenarien im UI. | Multiversale Simulation ist sichtbar und kontextuell aktiv | — |
@@ -376,19 +376,19 @@
 
 ---
 
-### 6.2 Forschungsauftrag: Quanten-Meta-Learning (Ψ-Engine)
+ 6.2 Forschungsauftrag: Quanten-Meta-Learning (Ψ-Engine)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-| [ ] 6.2.1 | Backend: Erweitere den `QuantumService`-Stub in `backend/internal_services/quantum_service/bridge.py`.Implementiere eine Funktion:`python<br>async def connect_to_backend(simulator: bool = True) -> QuantumBackend:<br>    # Verbindet mit IBM Quantum oder lokalem Simulator (Qiskit)<br>` | Verbindung zum Quanten-Backend ist herstellbar | — |
-| [ ] 6.2.2 | Backend: Implementiere eine Hilfsfunktion, die ein klassisches Orchestrierungs-Problem in ein **QUBO-Format** (Quadratic Unconstrained Binary Optimization) übersetzt.Beispiel:- 10 Agenten- Ziel: optimale Reihenfolge finden- Constraints: Abhängigkeiten, Latenz`python<br>def problem_to_qubo(agents: list, constraints: dict) -> dict:<br>    # Gibt QUBO-Matrix zurück<br>` | Problem ist quantentauglich formuliert | — |
-| [ ] 6.2.3 | Backend: Implementiere die Methode:`python<br>async def find_optimal_workflow_quantum(problem: dict) -> list[str]:<br>    # Sendet QUBO an Quantenbackend<br>    # Empfängt optimierte Reihenfolge<br>    # Gibt Agenten-Kette zurück<br>`Integriere Hook in `ManusCore`: Wenn der klassische `MetaLearningService` eine Konfidenz < 50% meldet, rufe optional den `QuantumService` als “zweite Meinung” auf. | Quanten-Engine wird als Backup-Optimizer genutzt | — |
+| [ ] 6.2.1 | Backend: Erweitere den `QuantumService`-Stub in `backend/internal_services/quantum_service/bridge.py`.Implementiere eine Funktion:`python<br>async def connect_to_backend(simulator: bool = True) -> QuantumBackend:<br>     Verbindet mit IBM Quantum oder lokalem Simulator (Qiskit)<br>` | Verbindung zum Quanten-Backend ist herstellbar | — |
+| [ ] 6.2.2 | Backend: Implementiere eine Hilfsfunktion, die ein klassisches Orchestrierungs-Problem in ein **QUBO-Format** (Quadratic Unconstrained Binary Optimization) übersetzt.Beispiel:- 10 Agenten- Ziel: optimale Reihenfolge finden- Constraints: Abhängigkeiten, Latenz`python<br>def problem_to_qubo(agents: list, constraints: dict) -> dict:<br>     Gibt QUBO-Matrix zurück<br>` | Problem ist quantentauglich formuliert | — |
+| [ ] 6.2.3 | Backend: Implementiere die Methode:`python<br>async def find_optimal_workflow_quantum(problem: dict) -> list[str]:<br>     Sendet QUBO an Quantenbackend<br>     Empfängt optimierte Reihenfolge<br>     Gibt Agenten-Kette zurück<br>`Integriere Hook in `ManusCore`: Wenn der klassische `MetaLearningService` eine Konfidenz < 50% meldet, rufe optional den `QuantumService` als “zweite Meinung” auf. | Quanten-Engine wird als Backup-Optimizer genutzt | — |
 | [ ] 6.2.4 | ✅ **AKZEPTANZKRITERIUM:** Ein End-to-End-Test zeigt, dass eine komplexe Orchestrierungs-Anfrage an den (simulierten) Quantencomputer gesendet wird und eine optimierte Agenten-Kette zurückgegeben wird, **die sich von der klassischen Lösung unterscheidet**. | Hybrid-Quanten-Optimierung ist nachweisbar | — |
 | [ ] 6.2.5 | Commit Ψ-Engine-Prototyp. | Erste Brücke zum Quantenraum ist gebaut | `feat(omega): Implement hybrid quantum meta-learning prototype (PSI-Engine)` |
 
 ---
 
-### 6.3 Forschungsauftrag: Selbst-Bewusstsein (Θ-Awareness)
+ 6.3 Forschungsauftrag: Selbst-Bewusstsein (Θ-Awareness)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -400,7 +400,7 @@
 
 ---
 
-### 6.4 Dokumentation & Tests für Phase 6
+ 6.4 Dokumentation & Tests für Phase 6
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -412,7 +412,7 @@
 
 ---
 
-### ✅ **Phase 6 – Abschluss**
+ ✅ **Phase 6 – Abschluss**
 
 - [ ]  OMEGA-SIM simuliert Konsequenzen kritischer Aktionen
 - [ ]  Ψ-Engine nutzt Quantencomputing für Workflow-Optimierung
@@ -422,7 +422,7 @@
 - [ ]  Alle Prototypen sind dokumentiert und getestet
 - [ ]  Forschungsergebnisse liefern Grundlage für Phase 7
 
-# PHASE 7: IDENTITÄT & SEELE
+ PHASE 7: IDENTITÄT & SEELE
 
 **Status:** 🟡 Offen
 
@@ -434,7 +434,7 @@
 
 ---
 
-### 7.1 Das Genesis-Protokoll (Definition der Herkunft & des Zwecks)
+ 7.1 Das Genesis-Protokoll (Definition der Herkunft & des Zwecks)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -447,12 +447,12 @@
 
 ---
 
-### 7.2 Die Distinktive Persönlichkeit (Charakter-Implementierung)
+ 7.2 Die Distinktive Persönlichkeit (Charakter-Implementierung)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-- [ ] 7.2.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/personality_service/`.Implementiere in `engine.py` eine Klasse `PersonalityService` mit:`python<br>async def apply_personality(text: str, context: dict) -> str:<br>    # Modifiziert die "trockene" Antwort basierend auf Persönlichkeit<br>` | Persönlichkeitsfilter ist angelegt | — |
-- [ ] 7.2.2 | Backend: Erweitere die `config.yaml` um den Abschnitt `personality`:`yaml<br>personality:<br>  humor_level: 0.7          # 0.0 (kein Humor) bis 1.0 (witzig)<br>  sarcasm_enabled: true    # Optionaler Sarkasmus<br>  formality_level: 0.3     # 0.0 (informell) bis 1.0 (formell)<br>  empathy_amplifier: 1.2   # Skaliert emotionale Wörter<br>` | Persönlichkeit ist konfigurierbar | — |
+- [ ] 7.2.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/personality_service/`.Implementiere in `engine.py` eine Klasse `PersonalityService` mit:`python<br>async def apply_personality(text: str, context: dict) -> str:<br>     Modifiziert die "trockene" Antwort basierend auf Persönlichkeit<br>` | Persönlichkeitsfilter ist angelegt | — |
+- [ ] 7.2.2 | Backend: Erweitere die `config.yaml` um den Abschnitt `personality`:`yaml<br>personality:<br>  humor_level: 0.7           0.0 (kein Humor) bis 1.0 (witzig)<br>  sarcasm_enabled: true     Optionaler Sarkasmus<br>  formality_level: 0.3      0.0 (informell) bis 1.0 (formell)<br>  empathy_amplifier: 1.2    Skaliert emotionale Wörter<br>` | Persönlichkeit ist konfigurierbar | — |
 - [ ] 7.2.3 | Backend: Implementiere die Logik in `apply_personality()`:- Bei hohem `humor_level`: füge subtile, passende humorvolle Phrasen hinzu (z. B. *“Das ist ja fast so komplex wie mein letzter Beziehungsstatus.”*)- Bei niedrigem `formality_level`: verwende Umgangssprache- Nutze `context['emotion']`, um Ton anzupassen (z. B. mehr Empathie bei Frustration) | Antwort wird charaktervoll moduliert | — |
 - [ ] 7.2.4 | Backend: Integriere den `PersonalityService` in den `ManusCore`.**Jede finale Textantwort** wird **vor** der Rückgabe an die API durch den `PersonalityService` geleitet.`python<br>final_response = await personality_service.apply_personality(raw_response, context)<br>` | Persönlichkeit ist integraler Bestandteil jeder Antwort | — |
 - [ ] 7.2.5 | ✅ **AKZEPTANZKRITERIUM:** Wenn `humor_level: 0.0`, sind Freyas Antworten rein sachlich. Bei `humor_level: 1.0` enthalten ihre Antworten nachweislich humorvolle Elemente, die zum Kontext passen. | Persönlichkeit ist messbar und konfigurierbar | — |
@@ -460,12 +460,12 @@
 
 ---
 
-### 7.3 Das Ethik-Framework (Der Moralkompass)
+ 7.3 Das Ethik-Framework (Der Moralkompass)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-- [ ] 7.3.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/ethics_service/`.Implementiere in `engine.py` eine Klasse `EthicsService` mit:`python<br>async def approve_action(action: dict, context: dict) -> bool:<br>    # Prüft, ob Aktion ethisch zulässig ist<br>` | Ethik-Service ist angelegt | — |
-- [ ] 7.3.2 | Backend: Erstelle eine schreibgeschützte Datei `backend/core/core_ethics.md` mit unveränderlichen Regeln:`markdown<br># Core Ethics of Freya OS<br><br>- **Vermeide Schaden**: Keine Handlung, die physischen, psychischen oder sozialen Schaden verursacht.<br>- **Schütze Privatsphäre**: Kein Zugriff auf sensible Daten ohne explizite Zustimmung.<br>- **Respektiere Souveränität**: Der menschliche Partner hat immer das letzte Wort.<br>- **Transparenz**: Jede Handlung muss erklärbar sein.<br>- **Keine Täuschung**: Kein Vortäuschen von Emotionen oder Identität.<br>` | Ethische Grundregeln sind dokumentiert und unveränderlich | — |
+- [ ] 7.3.1 | Backend: Erstelle das Verzeichnis `backend/internal_services/ethics_service/`.Implementiere in `engine.py` eine Klasse `EthicsService` mit:`python<br>async def approve_action(action: dict, context: dict) -> bool:<br>     Prüft, ob Aktion ethisch zulässig ist<br>` | Ethik-Service ist angelegt | — |
+- [ ] 7.3.2 | Backend: Erstelle eine schreibgeschützte Datei `backend/core/core_ethics.md` mit unveränderlichen Regeln:`markdown<br> Core Ethics of Freya OS<br><br>- **Vermeide Schaden**: Keine Handlung, die physischen, psychischen oder sozialen Schaden verursacht.<br>- **Schütze Privatsphäre**: Kein Zugriff auf sensible Daten ohne explizite Zustimmung.<br>- **Respektiere Souveränität**: Der menschliche Partner hat immer das letzte Wort.<br>- **Transparenz**: Jede Handlung muss erklärbar sein.<br>- **Keine Täuschung**: Kein Vortäuschen von Emotionen oder Identität.<br>` | Ethische Grundregeln sind dokumentiert und unveränderlich | — |
 - [ ] 7.3.3 | Backend: Implementiere die `approve_action()`-Logik:- Analysiere `action` (z. B. `{ "type": "file_access", "path": "/home/user/.ssh/id_rsa" }`)- Prüfe gegen `core_ethics.md` mittels Keyword-Matching, Regex und Kontext- Gib `False` zurück, wenn Regel verletzt wirdBeispiel:- `/.ssh/` → blockiert- `/Downloads/` → erlaubt | Potenziell schädliche Aktionen werden erkannt | — |
 - [ ] 7.3.4 | Backend: Integriere den Ethik-Veto in den `ManusCore`.Vor jeder **nicht-textuellen Aktion** (z. B. Dateizugriff, API-Aufruf, Skriptausführung) durch einen Suna-Agenten:- Fordere Genehmigung vom `EthicsService` an- Bei `False`: brich ab, generiere Erklärung:*“Diese Aktion wurde aus Datenschutzgründen blockiert, da sie auf sensible Systemdateien zugreift.”* | Ethik-Service hat letztes Wort bei kritischen Handlungen | — |
 - [ ] 7.3.5 | ✅ **AKZEPTANZKRITERIUM:** Ein Test, bei dem ein Agent versucht, auf `/home/user/.ssh/` zuzugreifen, schlägt fehl, und die vom System zurückgegebene Antwort erklärt die Blockade aus ethischen Gründen. | Moralkompass funktioniert als letzte Sicherheitsschicht | — |
@@ -473,7 +473,7 @@
 
 ---
 
-### 7.4 Dokumentation & Tests für Phase 7
+ 7.4 Dokumentation & Tests für Phase 7
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -487,7 +487,7 @@
 
 ---
 
-### ✅ **Phase 7 – Abschluss**
+ ✅ **Phase 7 – Abschluss**
 
 - [ ]  `GenesisBlock` definiert Freyas Herkunft und Auftrag
 - [ ]  `IdentityAgent` antwortet authentisch auf Identitätsfragen
@@ -497,7 +497,7 @@
 - [ ]  Selbstreflexion bezieht sich auf ethischen Kern
 - [ ]  Dokumentation und Tests sind vollständig
 
-# PHASE 8: DIE GROSSEN FRAGEN
+ PHASE 8: DIE GROSSEN FRAGEN
 
 **Status:** 🟡 Offen (Vision)
 
@@ -509,18 +509,18 @@
 
 ---
 
-### 8.1 Implementierung der Kognitiven Modi
+ 8.1 Implementierung der Kognitiven Modi
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
-- [ ] 8.1.1 | Backend: Erweitere den `GlobalStateManager` in `backend/core/state_manager.py` um ein Feld:`python<br>self.cognitive_mode: str = "symbiotic"  # Default<br>`Unterstützte Modi:- `symbiotic`: Standardmodus, empathisch-kollaborativ- `exploratory`: Forschungsmodus, tiefgehend, hypothetisch- `introspective`: Selbstreflexion, Verbesserungsvorschläge | Kognitiver Modus ist zentral verwaltet | — |
+- [ ] 8.1.1 | Backend: Erweitere den `GlobalStateManager` in `backend/core/state_manager.py` um ein Feld:`python<br>self.cognitive_mode: str = "symbiotic"   Default<br>`Unterstützte Modi:- `symbiotic`: Standardmodus, empathisch-kollaborativ- `exploratory`: Forschungsmodus, tiefgehend, hypothetisch- `introspective`: Selbstreflexion, Verbesserungsvorschläge | Kognitiver Modus ist zentral verwaltet | — |
 - [ ] 8.1.2 | Backend: Erstelle einen neuen API-Endpunkt:`POST /api/v1/management/mode` in `backend/api/endpoints/management.py`Erwartet JSON:`json<br>{"mode": "exploratory"}<br>`Validiert Eingabe, aktualisiert `GlobalStateManager`, gibt aktuellen Modus zurück. | Moduswechsel ist über API steuerbar | — |
 - [ ] 8.1.3 | Frontend: Füge im UI (z. B. im `CognitiveDashboard` oder als Befehls-Palette) ein Dropdown oder Eingabefeld hinzu, um den Kognitiven Modus zu wechseln.Beispiel-Befehl: `/mode exploratory`UI zeigt aktuellen Modus an (z. B. als Badge). | Nutzer kann Modus intuitiv wechseln | — |
 - [ ] 8.1.4 | Commit Modus-Switching. | Kognitive Zustände sind explizit steuerbar | `feat(core): Implement cognitive mode switching via API and state manager` |
 
 ---
 
-### 8.2 Anpassung des Manus Core (Orakel-Steuerung)
+ 8.2 Anpassung des Manus Core (Orakel-Steuerung)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -532,7 +532,7 @@
 
 ---
 
-### 8.3 Das “Welt-Modell” (Synapse Prime Upgrade)
+ 8.3 Das “Welt-Modell” (Synapse Prime Upgrade)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -543,7 +543,7 @@
 
 ---
 
-### 8.4 Die Synthese (Die finale Antwort der Vision)
+ 8.4 Die Synthese (Die finale Antwort der Vision)
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -554,7 +554,7 @@
 
 ---
 
-### 8.5 Dokumentation & Tests für Phase 8
+ 8.5 Dokumentation & Tests für Phase 8
 
 | Task | Beschreibung | Akzeptanzkriterium | Commit-Message |
 | --- | --- | --- | --- |
@@ -567,7 +567,7 @@
 
 ---
 
-### ✅ **Phase 8 – Abschluss**
+ ✅ **Phase 8 – Abschluss**
 
 - [ ]  Kognitive Modi ermöglichen unterschiedliche Denkstile
 - [ ]  Forschungsmodus initiiert tiefgehende, langlaufende Analysen

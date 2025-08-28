@@ -1,17 +1,17 @@
-# HDall_Fengine Debug Fix Script
-# Einfache Version für Ihr aktuelles Setup
+ HDall_Fengine Debug Fix Script
+ Einfache Version für Ihr aktuelles Setup
 
 Write-Host -ForegroundColor
 Write-Host -ForegroundColor 
 
-# 1. Prüfe ob package.json existiert
+ 1. Prüfe ob package.json existiert
 if ((Test-Path "package.json")) {
     Write-Host "Fehler: Nicht im richtigen Verzeichnis!" -ForegroundColor Red
     Write-Host "Bitte im Extension-Root ausführen (wo package.json liegt)" -ForegroundColor Yellow
     exit 1
 }
 
-# 2. Erstelle test-workspace mit heimdall.tasks.json
+ 2. Erstelle test-workspace mit heimdall.tasks.json
 Write-Host "Erstelle test-workspace..." -ForegroundColor Yellow
 
 if ((Test-Path "test-workspace")) {
@@ -19,7 +19,7 @@ if ((Test-Path "test-workspace")) {
     Write-Host "test-workspace Ordner erstellt" -ForegroundColor Green
 }
 
-# Erstelle eine einfache heimdall.tasks.json für Tests 
+ Erstelle eine einfache heimdall.tasks.json für Tests 
 sampleTasks = @
 [
   {
@@ -58,7 +58,7 @@ sampleTasks = @
 $sampleTasks | Out-File -FilePath "test-workspace/heimdall.tasks.json" -Encoding UTF8 -Force
 Write-Host "heimdall.tasks.json mit Beispieldaten erstellt" -ForegroundColor Green
 
-# 3. Kompiliere TypeScript
+ 3. Kompiliere TypeScript
 Write-Host "🔨 Kompiliere Extension..." -ForegroundColor Yellow
 try {
     $output = npm run compile 2>&1
@@ -76,7 +76,7 @@ try {
     exit 1
 }
 
-# 4. Prüfe ob extension.js erstellt wurde
+ 4. Prüfe ob extension.js erstellt wurde
 if (Test-Path "out/extension.js") {
     Write-Host "extension.js gefunden in out/" -ForegroundColor Green
 } else {
@@ -85,7 +85,7 @@ if (Test-Path "out/extension.js") {
     exit 1
 }
 
-# 5. Bereinige VS Code Cache (falls vorhanden)
+ 5. Bereinige VS Code Cache (falls vorhanden)
 $cachePaths = @(
     "$env:APPDATA\Code\logs",
     "$env:APPDATA\Code\CachedExtensions"
@@ -97,7 +97,7 @@ foreach ($path in $cachePaths) {
             Remove-Item $path -Recurse -Force -ErrorAction SilentlyContinue
             Write-Host "Cache bereinigt: $(Split-Path $path -Leaf)" -ForegroundColor Green
         } catch {
-            # Ignoriere Fehler - Cache-Bereinigung ist optional
+             Ignoriere Fehler - Cache-Bereinigung ist optional
         }
     }
 }
@@ -120,7 +120,7 @@ Write-Host " TEST-DATEN:" -ForegroundColor Cyan
 Write-Host "- test-workspace/heimdall.tasks.json mit 3 Beispiel-Tasks" -ForegroundColor White
 Write-Host ""
 
-# 6. Prüfe ob launch.json existiert
+ 6. Prüfe ob launch.json existiert
 if (!(Test-Path ".vscode/launch.json")) {
     Write-Host "  WARNUNG: .vscode/launch.json nicht gefunden!" -ForegroundColor Yellow
     Write-Host " Erstelle eine launch.json mit folgendem Inhalt:" -ForegroundColor Yellow
@@ -154,7 +154,7 @@ Write-Host " Setup abgeschlossen!" -ForegroundColor Green
 Write-Host " Tipp: Falls das Extension Development Host Fenster leer bleibt," -ForegroundColor Yellow
 Write-Host "   öffne manuell den 'test-workspace' Ordner im neuen Fenster." -ForegroundColor Yellow
 
-# Optional: VS Code automatisch starten
+ Optional: VS Code automatisch starten
 Write-Host ""
 $startCode = Read-Host "VS Code jetzt starten? (y/N)"
 if ($startCode -eq "y" -or $startCode -eq "Y") {
