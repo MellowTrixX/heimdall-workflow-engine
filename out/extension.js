@@ -1,5 +1,5 @@
 "use strict";
-// File: src/extension.ts - Heimdall Workflow Engine v3.2 (Final & Cleaned)
+// File: src/extension.ts - Heimdall Workflow Engine v3.1 (Performance & Interactivity Update)
 // Authors: Patrick L. & Freya AI
 // Description: Der Wächter der Brücke zwischen Plan und Realität. Robuste, asynchrone und zustands-sichere Implementierung.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -38,6 +38,7 @@ const axios_1 = __importDefault(require("axios"));
 // HAUPTKLASSE: HEIMDALL WORKFLOW ENGINE
 // ================================================================================================
 class HeimdallWorkflowEngine {
+    // 2. KONSTRUKTOR (Die Haupt-Montageanleitung)
     constructor(workspaceRoot, context) {
         this.taskFiles = new Map();
         this.workspaceRoot = workspaceRoot;
@@ -48,6 +49,7 @@ class HeimdallWorkflowEngine {
         this.rules = this.loadRules();
         this.ensureHeimdallStructure();
     }
+    // 3. METHODEN (Alle weiteren Bauabschnitte in logischer Reihenfolge)
     static async create(context) {
         const workspaceFolders = vscode.workspace.workspaceFolders;
         if (!workspaceFolders) {
@@ -70,6 +72,7 @@ class HeimdallWorkflowEngine {
     hasActiveWebview() {
         return !!this.webviewPanel;
     }
+    // --- KI-METHODEN ---
     async explainCodeByAI() {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -114,6 +117,7 @@ class HeimdallWorkflowEngine {
             }
         });
     }
+    // --- STRUKTUR & REGELN ---
     ensureHeimdallStructure() {
         const heimdallDir = path.join(this.workspaceRoot, '.heimdall');
         try {
@@ -157,8 +161,9 @@ class HeimdallWorkflowEngine {
         return { project_rules: { require_docs_for_prod: true, require_tests_for_prod: true }, agent_rules: { default_persona: "Du bist ein Senior-Entwickler, spezialisiert auf sauberen, testbaren Code.", forbidden_actions: ["Zugriff auf /etc/passwd", "Netzwerk-Anfragen an nicht-vertrauenswürdige Domains"] }, user_rules: { default_commit_prefix: "feat" }, overall_rules: { core_directives_path: ".heimdall/core_directives.md" } };
     }
     getDefaultCoreDirectives() {
-        return `# Heimdall Core Directives...`;
+        return ` Heimdall Core Directives...`;
     }
+    // --- TASK-PARSER ---
     async scanWorkspaceForTasks() {
         this.taskFiles.clear();
         const mdFiles = await this.findMarkdownFiles(this.workspaceRoot);
@@ -227,6 +232,7 @@ class HeimdallWorkflowEngine {
             return [];
         }
     }
+    // --- BEFEHLE & INTERAKTION ---
     async addNewTask() {
         const taskTitle = await vscode.window.showInputBox({ prompt: "Geben Sie den Titel des neuen Tasks ein", placeHolder: "z.B. Benutzer-Authentifizierung implementieren" });
         if (!taskTitle) {
@@ -329,6 +335,7 @@ class HeimdallWorkflowEngine {
             vscode.window.showErrorMessage(`Fehler beim Aktualisieren des Tasks: ${message}`);
         }
     }
+    // --- UI & VISUALISIERUNG ---
     showDashboard() {
         const column = vscode.window.activeTextEditor ? vscode.ViewColumn.Beside : vscode.ViewColumn.One;
         if (this.webviewPanel) {
@@ -414,13 +421,15 @@ class HeimdallWorkflowEngine {
                 <button id="refresh-btn">🔄 Aktualisieren</button>
             </div>
 
-            <div id="dashboard-content"></div>
+            <div id="dashboard-content">
+                <!-- Dieser Inhalt wird dynamisch durch JavaScript gefüllt -->
+            </div>
 
             <script nonce="${nonce}">
                 const vscode = acquireVsCodeApi();
                 const dashboardContent = document.getElementById('dashboard-content');
 
-                window.addEventListener('message', event => {
+             window.addEventListener('message', event => {
                     const message = event.data;
                     if (message.command === 'update') {
                         updateDashboard(message.tasks, message.debt);
@@ -510,13 +519,14 @@ class HeimdallWorkflowEngine {
                 }
 
                 function escapeHtml(unsafe) {
-                    return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+                    return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&039;");
                 }
             </script>
         </body>
         </html>
         `;
     }
+    // --- HILFSMETHODEN ---
     findTaskById(taskId) {
         return this.getAllTasks().find(t => t.id === taskId);
     }
@@ -536,11 +546,24 @@ class HeimdallWorkflowEngine {
         return { totalTasks: total, nichtGestartet, prototypen, abgeschlossen, abgeschlossenDokumentiert, unclassified, debtPercentage };
     }
     cleanTaskTitle(text) {
-        const cleanedText = text.replace(/\[(NICHT GESTARTET|NICHT_GESTARTET|PROTOTYP|ABGESCHLOSSEN_DOKUMENTIERT|ABGESCHLOSSEN|UNKLASSIFIZIERT)\]\s*/ig, '').trim();
-        if (cleanedText.includes('|')) {
-            return cleanedText.split('|')[0].trim();
+        return text.replace(/\[(NICHT_GESTARTET|PROTOTYP|ABGESCHLOSSEN|ABGESCHLOSSEN_DOKUMENTIERT|UNKLASSIFIZIERT)\]\s*/ig, '').trim();
+    }
+    getAllTasks() {
+        return Array.from(this.taskFiles.values()).flat();
+    }
+    updateStatusBar() {
+        const debt = this.calculateIntegrationDebt();
+        const totalDocumented = debt.abgeschlossenDokumentiert;
+        this.statusBarItem.text = `🛡️ Heimdall: ${totalDocumented}/${debt.totalTasks} Dokumentiert`;
+        this.statusBarItem.tooltip = `Integrationsschuld: ${debt.debtPercentage}% | Klicke, um das Dashboard zu öffnen`;
+    }
+    getNonce() {
+        let text = '';
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 32; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
-        return cleanedText;
+        return text;
     }
     parseTaskStatus(char) {
         switch (char.toLowerCase()) {
@@ -567,23 +590,9 @@ class HeimdallWorkflowEngine {
         }
         return 'UNKLASSIFIZIERT';
     }
-    getAllTasks() {
-        return Array.from(this.taskFiles.values()).flat();
-    }
-    updateStatusBar() {
-        const debt = this.calculateIntegrationDebt();
-        const totalDocumented = debt.abgeschlossenDokumentiert;
-        this.statusBarItem.text = `🛡️ Heimdall: ${totalDocumented}/${debt.totalTasks} Dokumentiert`;
-        this.statusBarItem.tooltip = `Integrationsschuld: ${debt.debtPercentage}% | Klicke, um das Dashboard zu öffnen`;
-    }
-    getNonce() {
-        let text = '';
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 32; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
-    }
+    async promoteTask() { }
+    async realityCheck(task) { /* ... (Implementierung für Reality Check) ... */ return true; }
+    async reportDebt() { }
 }
 // ================================================================================================
 // EXTENSION AKTIVIERUNG & REGISTRIERUNG
@@ -597,7 +606,7 @@ async function activate(context) {
             vscode.window.showInformationMessage('🛡️ Heimdall Workflow Engine ist bereit.');
         }
     };
-    context.subscriptions.push(vscode.commands.registerCommand('heimdall.showDashboard', () => heimdall?.showDashboard()), vscode.commands.registerCommand('heimdall.explainCode', () => heimdall?.explainCodeByAI()), vscode.commands.registerCommand('heimdall.classifyTask', () => heimdall?.classifyTask()), vscode.commands.registerCommand('heimdall.promoteTask', () => { }), vscode.commands.registerCommand('heimdall.realityCheck', () => { }), vscode.commands.registerCommand('heimdall.reportDebt', () => { }), vscode.commands.registerCommand('heimdall.refresh', () => heimdall?.scanWorkspaceForTasks()), vscode.commands.registerCommand('heimdall.addTask', () => heimdall?.addNewTask()), vscode.commands.registerCommand('heimdall.openRules', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand('heimdall.showDashboard', () => heimdall?.showDashboard()), vscode.commands.registerCommand('heimdall.explainCode', () => heimdall?.explainCodeByAI()), vscode.commands.registerCommand('heimdall.classifyTask', () => heimdall?.classifyTask()), vscode.commands.registerCommand('heimdall.promoteTask', () => heimdall?.promoteTask()), vscode.commands.registerCommand('heimdall.realityCheck', () => heimdall?.realityCheck()), vscode.commands.registerCommand('heimdall.reportDebt', () => heimdall?.reportDebt()), vscode.commands.registerCommand('heimdall.refresh', () => heimdall?.scanWorkspaceForTasks()), vscode.commands.registerCommand('heimdall.addTask', () => heimdall?.addNewTask()), vscode.commands.registerCommand('heimdall.openRules', async () => {
         if (vscode.workspace.workspaceFolders) {
             const rulesPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.heimdall', 'rules.json');
             const doc = await vscode.workspace.openTextDocument(rulesPath);

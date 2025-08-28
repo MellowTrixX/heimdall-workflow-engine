@@ -1,4 +1,4 @@
-// File: src/extension.ts - Heimdall Workflow Engine v3.2 (Final & Cleaned)
+// File: src/extension.ts - Heimdall Workflow Engine v3.1 (Performance & Interactivity Update)
 // Authors: Patrick L. & Freya AI
 // Description: Der Wächter der Brücke zwischen Plan und Realität. Robuste, asynchrone und zustands-sichere Implementierung.
 
@@ -6,6 +6,10 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
+
+// ================================================================================================
+// DATENSTRUKTUREN & INTERFACES (Unverändert)
+// ================================================================================================
 
 interface HeimdallRules {
     project_rules: {
@@ -23,14 +27,15 @@ interface HeimdallRules {
         core_directives_path: string;
     };
 }
+
 interface ParsedTask {
-    id: string;
+    id: string; // Eindeutige ID für die Interaktion
     line: number;
     rawText: string;
     status: 'unchecked' | 'checked' | 'cancelled' | 'important' | 'question';
     classification: 'NICHT_GESTARTET' | 'PROTOTYP' | 'ABGESCHLOSSEN' | 'ABGESCHLOSSEN_DOKUMENTIERT' | 'UNKLASSIFIZIERT';
     title: string;
-    file: string;
+    file: string; // Relativer Pfad vom Workspace-Root
 }
 
 interface IntegrationDebt {
@@ -48,6 +53,7 @@ interface IntegrationDebt {
 // ================================================================================================
 
 class HeimdallWorkflowEngine {
+    // 1. EIGENSCHAFTEN (Alle Teile werden hier zuerst deklariert)
     private rules: HeimdallRules;
     private workspaceRoot: string;
     private taskFiles: Map<string, ParsedTask[]> = new Map();
@@ -55,6 +61,7 @@ class HeimdallWorkflowEngine {
     private context: vscode.ExtensionContext;
     private statusBarItem: vscode.StatusBarItem;
 
+    // 2. KONSTRUKTOR (Die Haupt-Montageanleitung)
     private constructor(workspaceRoot: string, context: vscode.ExtensionContext) {
         this.workspaceRoot = workspaceRoot;
         this.context = context;
@@ -66,6 +73,8 @@ class HeimdallWorkflowEngine {
         this.rules = this.loadRules();
         this.ensureHeimdallStructure();
     }
+
+    // 3. METHODEN (Alle weiteren Bauabschnitte in logischer Reihenfolge)
 
     public static async create(context: vscode.ExtensionContext): Promise<HeimdallWorkflowEngine | undefined> {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -89,9 +98,12 @@ class HeimdallWorkflowEngine {
         this.webviewPanel?.dispose();
         this.statusBarItem.dispose();
     }
+
     public hasActiveWebview(): boolean {
         return !!this.webviewPanel;
     }
+
+    // --- KI-METHODEN ---
     public async explainCodeByAI(): Promise<void> {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -135,6 +147,8 @@ class HeimdallWorkflowEngine {
             }
         });
     }
+
+    // --- STRUKTUR & REGELN ---
     private ensureHeimdallStructure(): void {
         const heimdallDir = path.join(this.workspaceRoot, '.heimdall');
         try {
@@ -153,6 +167,7 @@ class HeimdallWorkflowEngine {
             vscode.window.showErrorMessage(`Heimdall: Fehler beim Erstellen der Konfigurationsstruktur: ${error}`);
         }
     }
+
     private loadRules(): HeimdallRules {
         const rulesPath = path.join(this.workspaceRoot, '.heimdall', 'rules.json');
         const defaultRules = this.getDefaultRules();
@@ -180,6 +195,8 @@ class HeimdallWorkflowEngine {
     private getDefaultCoreDirectives(): string {
         return ` Heimdall Core Directives...`;
     }
+
+    // --- TASK-PARSER ---
     public async scanWorkspaceForTasks(): Promise<void> {
         this.taskFiles.clear();
         const mdFiles = await this.findMarkdownFiles(this.workspaceRoot);
@@ -247,6 +264,8 @@ class HeimdallWorkflowEngine {
             return [];
         }
     }
+
+    // --- BEFEHLE & INTERAKTION ---
     public async addNewTask(): Promise<void> {
         const taskTitle = await vscode.window.showInputBox({ prompt: "Geben Sie den Titel des neuen Tasks ein", placeHolder: "z.B. Benutzer-Authentifizierung implementieren" });
         if (!taskTitle) { return; }
@@ -267,6 +286,7 @@ class HeimdallWorkflowEngine {
             vscode.window.showErrorMessage(`Fehler beim Hinzufügen des Tasks: ${error}`);
         }
     }
+
     public async editTaskTitle(taskId: string): Promise<void> {
         const task = this.findTaskById(taskId);
         if (!task) { vscode.window.showErrorMessage("Task nicht gefunden."); return; }
@@ -289,6 +309,7 @@ class HeimdallWorkflowEngine {
              vscode.window.showErrorMessage(`Fehler beim Bearbeiten des Tasks: ${error}`);
         }
     }
+
     public async classifyTask(): Promise<void> {
         const allTasks = this.getAllTasks();
         if (allTasks.length === 0) { vscode.window.showInformationMessage('🛡️ Keine Tasks gefunden.'); return; }
@@ -327,6 +348,8 @@ class HeimdallWorkflowEngine {
             vscode.window.showErrorMessage(`Fehler beim Aktualisieren des Tasks: ${message}`);
         }
     }
+
+    // --- UI & VISUALISIERUNG ---
     public showDashboard(): void {
         const column = vscode.window.activeTextEditor ? vscode.ViewColumn.Beside : vscode.ViewColumn.One;
         if (this.webviewPanel) {
@@ -361,6 +384,7 @@ class HeimdallWorkflowEngine {
         this.webviewPanel.webview.html = this.getDashboardHtml(this.webviewPanel.webview);
         this.updateWebviewData();
     }
+
     private updateWebviewData(): void {
         if (!this.webviewPanel) { return; }
         const allTasks = this.getAllTasks();
@@ -410,13 +434,15 @@ class HeimdallWorkflowEngine {
                 <button id="refresh-btn">🔄 Aktualisieren</button>
             </div>
 
-            <div id="dashboard-content"></div>
+            <div id="dashboard-content">
+                <!-- Dieser Inhalt wird dynamisch durch JavaScript gefüllt -->
+            </div>
 
             <script nonce="${nonce}">
                 const vscode = acquireVsCodeApi();
                 const dashboardContent = document.getElementById('dashboard-content');
 
-                window.addEventListener('message', event => {
+             window.addEventListener('message', event => {
                     const message = event.data;
                     if (message.command === 'update') {
                         updateDashboard(message.tasks, message.debt);
@@ -512,8 +538,9 @@ class HeimdallWorkflowEngine {
         </body>
         </html>
         `;
-        }
+    }
 
+    // --- HILFSMETHODEN ---
     private findTaskById(taskId: string): ParsedTask | undefined {
         return this.getAllTasks().find(t => t.id === taskId);
     }
@@ -535,30 +562,7 @@ class HeimdallWorkflowEngine {
     }
 
     private cleanTaskTitle(text: string): string {
-        const cleanedText = text.replace(/\[(NICHT GESTARTET|NICHT_GESTARTET|PROTOTYP|ABGESCHLOSSEN_DOKUMENTIERT|ABGESCHLOSSEN|UNKLASSIFIZIERT)\]\s*/ig, '').trim();
-        if (cleanedText.includes('|')) {
-            return cleanedText.split('|')[0].trim();
-        }
-        return cleanedText;
-    }
-
-    private parseTaskStatus(char: string): ParsedTask['status'] {
-        switch (char.toLowerCase()) {
-            case 'x': return 'checked';
-            case '~': return 'cancelled';
-            case '!': return 'important';
-            case '?': return 'question';
-            default: return 'unchecked';
-        }
-    }
-    
-    private parseTaskClassification(text: string): ParsedTask['classification'] {
-        const upperText = text.toUpperCase();
-        if (upperText.includes('[NICHT GESTARTET]')) { return 'NICHT_GESTARTET'; }
-        if (upperText.includes('[PROTOTYP]')) { return 'PROTOTYP'; }
-        if (upperText.includes('[ABGESCHLOSSEN_DOKUMENTIERT]')) { return 'ABGESCHLOSSEN_DOKUMENTIERT'; }
-        if (upperText.includes('[ABGESCHLOSSEN]')) { return 'ABGESCHLOSSEN'; }
-        return 'UNKLASSIFIZIERT';
+        return text.replace(/\[(NICHT_GESTARTET|PROTOTYP|ABGESCHLOSSEN|ABGESCHLOSSEN_DOKUMENTIERT|UNKLASSIFIZIERT)\]\s*/ig, '').trim();
     }
 
     private getAllTasks(): ParsedTask[] {
@@ -580,6 +584,23 @@ class HeimdallWorkflowEngine {
         }
         return text;
     }
+
+    private parseTaskStatus(char: string): ParsedTask['status'] {
+        switch (char.toLowerCase()) { case 'x': return 'checked'; case '~': return 'cancelled'; case '!': return 'important'; case '?': return 'question'; default: return 'unchecked'; }
+    }
+
+    private parseTaskClassification(text: string): ParsedTask['classification'] {
+        const upperText = text.toUpperCase();
+        if (upperText.includes('[NICHT GESTARTET]')) { return 'NICHT_GESTARTET'; }
+        if (upperText.includes('[PROTOTYP]')) { return 'PROTOTYP'; }
+        if (upperText.includes('[ABGESCHLOSSEN_DOKUMENTIERT]')) { return 'ABGESCHLOSSEN_DOKUMENTIERT'; }
+        if (upperText.includes('[ABGESCHLOSSEN]')) { return 'ABGESCHLOSSEN'; }
+        return 'UNKLASSIFIZIERT';
+    }
+
+    public async promoteTask(): Promise<void> { /* ... (Implementierung für Beförderungslogik) ... */ }
+    public async realityCheck(task?: ParsedTask): Promise<boolean> { /* ... (Implementierung für Reality Check) ... */ return true; }
+    public async reportDebt(): Promise<void> { /* ... (Implementation in Zukunft) ... */ }
 }
 
 // ================================================================================================
@@ -602,9 +623,9 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('heimdall.showDashboard', () => heimdall?.showDashboard()),
         vscode.commands.registerCommand('heimdall.explainCode', () => heimdall?.explainCodeByAI()),
         vscode.commands.registerCommand('heimdall.classifyTask', () => heimdall?.classifyTask()),
-        vscode.commands.registerCommand('heimdall.promoteTask', () => { /* Befehl für später implementieren */ }),
-        vscode.commands.registerCommand('heimdall.realityCheck', () => { /* Befehl für später implementieren */ }),
-        vscode.commands.registerCommand('heimdall.reportDebt', () => { /* Befehl für später implementieren */ }),
+        vscode.commands.registerCommand('heimdall.promoteTask', () => heimdall?.promoteTask()),
+        vscode.commands.registerCommand('heimdall.realityCheck', () => heimdall?.realityCheck()),
+        vscode.commands.registerCommand('heimdall.reportDebt', () => heimdall?.reportDebt()),
         vscode.commands.registerCommand('heimdall.refresh', () => heimdall?.scanWorkspaceForTasks()),
         vscode.commands.registerCommand('heimdall.addTask', () => heimdall?.addNewTask()),
         vscode.commands.registerCommand('heimdall.openRules', async () => {
