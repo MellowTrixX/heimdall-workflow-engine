@@ -1,0 +1,19 @@
+fastapi
+"uvicorn[standard]"
+pydantic
+python-dotenv
+
+# Abhängigkeiten für Phase 2 (Intelligenz)
+transformers
+sentence-transformers
+torch
+
+# Abhängigkeiten für Phase 3 (Gedächtnis)
+sqlalchemy
+psycopg2-binary
+pgvector
+alembic
+
+# Weitere nützliche Pakete
+requests
+python-multipart
