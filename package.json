@@ -62,5 +62,9 @@
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.32.0",
     "typescript": "^5.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MellowTrixX/heimdall-workflow-engine.git"
   }
 }
