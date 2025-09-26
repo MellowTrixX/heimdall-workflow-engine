@@ -1,0 +1,66 @@
+{
+  "name": "heimdall-workflow-engine",
+  "displayName": "Heimdall Workflow Engine",
+  "description": "An intelligent workflow and quality gatekeeper for VS Code.",
+  "version": "1.0.0",
+  "publisher": "MellowTrixX",
+  "engines": {
+    "vscode": "^1.104.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:heimdall-workflow-engine.*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "heimdall-workflow-engine.helloWorld",
+        "title": "Heimdall: Hello World"
+      },
+      {
+        "command": "heimdall-workflow-engine.runWorkflow",
+        "title": "Heimdall: Run Freya Workflow"
+      },
+      {
+        "command": "heimdall-workflow-engine.aiFix",
+        "title": "Heimdall: AI Fix Code"
+      },
+      {
+        "command": "heimdall-workflow-engine.analyzePrompt",
+        "title": "Heimdall: Analyze with FDS"
+      }
+    ],
+    "configuration": {
+      "title": "Heimdall",
+      "properties": {
+        "heimdall.openrouterKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your OpenRouter API Key (for AI-Fix Commands)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.18.6",
+    "@types/vscode": "^1.103.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.32.0",
+    "typescript": "^5.9.2"
+  }
+}
